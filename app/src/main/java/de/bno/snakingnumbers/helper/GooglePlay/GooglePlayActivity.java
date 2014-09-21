@@ -97,7 +97,7 @@ public abstract class GooglePlayActivity extends FragmentActivity implements Goo
 
         super.onStart();
 
-        if (!resolvingError && !loadingCanceled) {
+        if (!resolvingError && !loadingCanceled && (getApiClient() == null || !getApiClient().isConnected())) {
 
             Log.d(GooglePlayActivity.class.getName(), "Connect");
             getApiClient().connect();

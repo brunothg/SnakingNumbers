@@ -54,27 +54,4 @@ public class GooglePlayGame {
         return builder.build();
     }
 
-
-    public static Result isAvailable(Activity activity, int requsetCode, DialogInterface.OnCancelListener cancelListener) {
-
-        int answer = GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity);
-
-        if (answer == ConnectionResult.SUCCESS) {
-
-            return new Result(true, null);
-        }
-
-        if (!GooglePlayServicesUtil.isUserRecoverableError(answer)) {
-
-            return null;
-        }
-
-        if (cancelListener != null) {
-
-            return new Result(false, GooglePlayServicesUtil.getErrorDialog(answer, activity, requsetCode, cancelListener));
-        }
-
-        return new Result(false, GooglePlayServicesUtil.getErrorDialog(answer, activity, requsetCode));
-    }
-
 }
