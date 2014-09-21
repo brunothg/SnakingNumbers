@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Field">
+        <attr name="borderWidth_Left" format="dimension"/>
+        <attr name="borderWidth_Right" format="dimension"/>
+        <attr name="borderWidth_Top" format="dimension"/>
+        <attr name="borderWidth_Bottom" format="dimension"/>
+        <attr name="snakeColor" format="color"/>
+        <attr name="borderColor" format="color"/>
+        <attr name="numberColor" format="color"/>
+        <attr name="direction" format="enum">
+            <enum name="none" value="0" />
+            <enum name="right" value="1" />
+            <enum name="down" value="2" />
+            <enum name="left" value="3" />
+            <enum name="up" value="4" />
+        </attr>
+        <attr name="secondDirection" format="enum">
+            <enum name="none" value="0" />
+            <enum name="right" value="1" />
+            <enum name="down" value="2" />
+            <enum name="left" value="3" />
+            <enum name="up" value="4" />
+        </attr>
+        <attr name="bodyStyle" format="enum">
+            <enum name="normal" value="0" />
+            <enum name="head" value="1" />
+            <enum name="tail" value="2" />
+            <enum name="drawable" value="3" />
+        </attr>
+        <attr name="drawableBody" format="reference" />
+        <attr name="number" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="SquareGridLayout">
+        <attr name="squareSize" format="enum">
+            <enum name="width" value="0" />
+            <enum name="height" value="1" />
+        </attr>
+    </declare-styleable>
+</resources>

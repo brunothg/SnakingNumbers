@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="android:Theme.Holo">
+        <item name="android:actionBarStyle">@style/actionBarTheme</item>
+        <item name="android:buttonStyle">@style/buttonTheme</item>
+        <item name="android:imageButtonStyle">@style/imageButtonTheme</item>
+    </style>
+
+    <style name="buttonTheme" parent="android:style/Widget.Button">
+           <item name="android:background">@drawable/dark_btn</item>
+    </style>
+
+    <style name="imageButtonTheme" parent="android:style/Widget.ImageButton">
+        <item name="android:background">@drawable/dark_btn</item>
+    </style>
+
+    <style name="actionBarTheme" parent="android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/base_theme_color</item>
+        <item name="android:titleTextStyle">@style/actionBar.title</item>
+    </style>
+
+    <style name="actionBar.title" parent="android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/bright2_theme_color</item>
+    </style>
+
+    <style name="DialogLikeFragment" parent="AppTheme">
+        <item name="android:background">@drawable/border_dialog</item>
+        <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingTop">@dimen/activity_vertical_margin</item>
+        <item name="android:paddingBottom">@dimen/activity_vertical_margin</item>
+    </style>
+</resources>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name" translatable="false">Snaking Numbers</string>
+
+    <string name="title_activity_about">About playing Snaking Numbers</string>
+    <string name="title_activity_game">Playing Snaking Numbers</string>
+    <string name="title_activity_tut">How to play Snaking Numbers</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_game_result">Game Result</string>
+
+    <string name="snake_description">Snake head</string>
+    <string name="difficulty_description">Game difficulty indicator image</string>
+    <string name="timer_description">Elapsed time image</string>
+    <string name="pause_description">Pause image</string>
+    <string name="click_count_description">Click count image</string>
+    <string name="btn_next_description">Next button</string>
+    <string name="btn_previous_description">Previous button</string>
+
+    <string name="game_new">New Game</string>
+    <string name="game_easy">Easy</string>
+    <string name="game_medium">Medium</string>
+    <string name="game_hard">Hard</string>
+
+    <string name="information_about">About playing Snaking Numbers</string>
+
+    <string name="loading_game_title">Creating game</string>
+    <string name="loading_game_info">Please wait while creating game</string>
+
+    <string name="paused_game_title">Paused</string>
+    <string name="paused_game_info">Touch to resume game</string>
+
+    <string name="finish_btn">Congratulation, you found a solution.\n\n<b>Finish</b></string>
+
+    <string name="operation_not_allowed">This turn is not allowed</string>
+
+    <string name="title_sure_exit">Exit game?</string>
+    <string name="message_sure_exit">Do you really want to exit this game?</string>
+    <string name="yes_sure_exit">Menu</string>
+    <string name="no_sure_exit">Back to game</string>
+
+    <string name="timer_format" formatted="false" translatable="false">%02d:%02d:%02d</string>
+    <string name="click_count_format" formatted="false" translatable="false">%04d</string>
+
+    <string name="tut_goal">Goal of this game</string>
+    <string name="tut_goal_info">Find a path from the beginning (upper left corner) to the end (lower right corner) in as less time as possible.</string>
+
+    <string name="tut_rules">What is allowed</string>
+    <string name="tut_rules_info">Diagonal fields are not permitted. On your way you must tap on every number, but just once!</string>
+
+    <string name="tut_control">How to play</string>
+    <string name="tut_control_info">Touch a field to select it. A second touch deselects the last field. A new field can be appended only at the end of the snake.</string>
+
+    <string name="tut_start">Let\'s Play!</string>
+
+    <string name="menu_settings">Settings</string>
+
+    <string name="settings_group_game_info">Information about the game</string>
+
+    <string name="license" translatable="false">License:Snaking Numbers an Android game.\nCopyright (c) 2014 Marvin Bruns\n\nThis program is free software: you can redistribute it and/or modify\nit under the terms of the GNU General Public License as published by\nthe Free Software Foundation, either version 3 of the License, or\n(at your option) any later version.\n\nThis program is distributed in the hope that it will be useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\nGNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License\nalong with this program.  If not, see &lt;http://www.gnu.org/licenses/> \n</string>
+
+    <string-array name="about_values">
+        <item>Goal:Complete the snake and be fast. You have to find a path from the beginning to the end in as less time as possible.</item>
+        <item>Rules:It is your task to complete the snake\'s path from the upper left corner to the lower right corner. On your way you\'ll cross many numbers, but you can pass one number just once. And every number has to be on your path. The order you choose to cross the numbers does not matter.</item>
+        <item>Source Code:If you are interested in the source code of this application you may find it at &lt;github.com>:\nVisit &lt;https://github.com/brunothg/SnakingNumbers> for version controlled source code.</item>
+        <item>@string/license</item>
+    </string-array>
+
+</resources>

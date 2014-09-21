@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="base_theme_color">#2D882D</color>
+    <color name="bright1_theme_color">#55AA55</color>
+    <color name="bright2_theme_color">#88CC88</color>
+    <color name="dark1_theme_color">#116611</color>
+    <color name="dark2_theme_color">#004400</color>
+
+    <color name="dark2_normal_background">#000</color>
+    <color name="dark1_normal_background">#303035</color>
+
+    <color name="base_highlight">#fd0006</color>
+    <color name="dark1_highlight">#9e0004</color>
+</resources>

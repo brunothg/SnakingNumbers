@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Snaking Numbers an Android game.
+  ~ Copyright (c) 2014 Marvin Bruns
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>
+  -->
+
+<resources>
+
+    <string name="title_activity_about">Alles über Snaking Numbers</string>
+    <string name="title_activity_game">Snaking Numbers Spielen</string>
+    <string name="title_activity_settings">Einstellungen</string>
+    <string name="title_activity_tut">Wie wird Snaking Numbers gespielt</string>
+
+    <string name="snake_description">Schlangenkopf</string>
+    <string name="difficulty_description">Spielschwierigkeitsindikator Bild</string>
+    <string name="timer_description">Vergangene Zeit Bild</string>
+    <string name="pause_description">Pause Bild</string>
+    <string name="click_count_description">Klick Zähler Bild</string>
+    <string name="btn_next_description">Weiter Button</string>
+    <string name="btn_previous_description">Zurück Button</string>
+
+    <string name="game_new">Neues Spiel</string>
+    <string name="game_easy">Einfach</string>
+    <string name="game_medium">Mittel</string>
+    <string name="game_hard">Schwer</string>
+
+    <string name="information_about">Alles über Snaking Numbers</string>
+
+    <string name="loading_game_title">Erstelle Spiel</string>
+    <string name="loading_game_info">Bitte warte während das Spiel erstellt wird</string>
+
+    <string name="paused_game_title">Pausiert</string>
+    <string name="paused_game_info">Berühren um weiter zu spielen</string>
+
+    <string name="finish_btn">Glückwunsch, du hast eine Lösung gefunden.\n\n<b>Beenden</b></string>
+
+    <string name="operation_not_allowed">Dieser Zug ist nicht erlaubt</string>
+
+    <string name="title_sure_exit">Spiel verlassen?</string>
+    <string name="message_sure_exit">Willst du das Spiel wirklich verlassen?</string>
+    <string name="yes_sure_exit">Menü</string>
+    <string name="no_sure_exit">Zurück zum Spiel</string>
+
+    <string name="tut_goal">Ziel des Spiels</string>
+    <string name="tut_goal_info">Finde in so kurzer Zeit wie möglich einen Weg von der oberen linken Ecke in die untere rechte Ecke.</string>
+
+    <string name="tut_rules">Was ist erlaubt</string>
+    <string name="tut_rules_info">Diagonale Wege sind nicht erlaubt. Es muss jede Zahl genau einmal überquert werden. Eine Zahl kann kein zweites Mal überquert werden.</string>
+
+    <string name="tut_control">Wie wird gespielt</string>
+    <string name="tut_control_info">Um ein Feld zu aktivieren auf das gewünschte Feld tippen. Eine zweite Berührung entfernt das Ende von der Schlange. Die Schlange muss ausgehend vom Anfang stetig erweitert werden.</string>
+
+    <string name="tut_start">Los Geht\'s.</string>
+
+    <string name="menu_settings">Einstellungen</string>
+
+    <string name="settings_group_game_info">Informationen über das Spiel</string>
+
+    <string-array name="about_values">
+        <item>Ziel des Spiels:Vervollständige die Schlange und sei schnell. Es wird deine Aufgabe sein, in so kurzer Zeit wie möglich, einen Weg durch den Zahlenwald zu finden.</item>
+        <item>Die Regeln:Die Schlange muss von der oberen linken Ecke ausgehend zur unteren rechten Ecke vervollständigt werden. Auf dem Weg dorthin darf jede Zahl nur ein einziges Mal überquert werden. Aber aufgepasst jede Zahl muss auch einmal auf dem Weg der Schlange liegen. Dabei spielt es keine Rolle, in welcher Reihenfolge die Zahlen überquert werden.</item>
+        <item>Quellcode:Solltest du Interesse an dem Quellcode dieser App haben besuche doch einmal &lt;github.com&gt;:\nZu finden ist das Repository unter &lt;https://github.com/brunothg/SnakingNumbers&gt;</item>
+        <item>@string/license</item>
+    </string-array>
+
+</resources>

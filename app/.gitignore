@@ -1,0 +1,4 @@
+/build
+*.apk
+
+src/main/res/values/ids.xml

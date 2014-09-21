@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="de.bno.snakingnumbers"
+    android:installLocation="auto">
+
+    <uses-permission android:name="android.permission.access_network_state" />
+    <uses-permission android:name="android.permission.internet" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.gms.games.APP_ID"
+            android:value="@string/app_id" />
+
+        <activity
+            android:name=".MainMenu"
+            android:label="@string/app_name"
+            android:screenOrientation="sensorPortrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".about.About"
+            android:label="@string/title_activity_about"
+            android:parentActivityName=".settings.SettingsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.bno.snakingnumbers.settings.SettingsActivity" />
+        </activity>
+        <activity
+            android:name=".game.gui.Game"
+            android:label="@string/title_activity_game"
+            android:parentActivityName=".MainMenu">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.bno.snakingnumbers.MainMenu" />
+        </activity>
+        <activity
+            android:name=".tutorial.Tutorial"
+            android:label="@string/title_activity_tut"
+            android:screenOrientation="sensorPortrait"></activity>
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".MainMenu">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.bno.snakingnumbers.MainMenu" />
+        </activity>
+        <activity
+            android:name=".result.GameResult"
+            android:label="@string/title_activity_game_result"
+            android:parentActivityName=".MainMenu">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.bno.snakingnumbers.MainMenu" />
+        </activity>
+    </application>
+
+</manifest>
