@@ -23,6 +23,7 @@
     <string name="title_activity_game">Snaking Numbers Spielen</string>
     <string name="title_activity_settings">Einstellungen</string>
     <string name="title_activity_tut">Wie wird Snaking Numbers gespielt</string>
+    <string name="title_activity_game_result">Spiel Ergebnisse</string>
 
     <string name="snake_description">Schlangenkopf</string>
     <string name="difficulty_description">Spielschwierigkeitsindikator Bild</string>

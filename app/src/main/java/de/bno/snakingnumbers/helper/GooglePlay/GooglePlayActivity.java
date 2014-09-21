@@ -24,7 +24,9 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -38,13 +40,16 @@ public abstract class GooglePlayActivity extends FragmentActivity implements Goo
 
 
     private static final String RESOLVING_ERROR_KEY = "resolvingError";
+    private static final String LOADING_CANCELED_KEY = "loadingCanceled";
     private static final String DIALOG_ERROR_KEY = "dialogError";
     protected static final int RESOLVE_ERROR_REQUEST = 1001;
 
     private static final String ERROR_DIALOG_TAG = "errorDialog";
+    private static final String GOOGLE_API_CLIENT_FRAGMENT_TAG = "googleApiClientFragment";
 
-    private GoogleApiClient apiClient = null;
+    private GoogleApiClientFragment apiClientFragment;
     private boolean resolvingError = false;
+    private boolean loadingCanceled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +57,37 @@ public abstract class GooglePlayActivity extends FragmentActivity implements Goo
 
         super.onCreate(savedInstanceState);
 
-        apiClient = GooglePlayGame.getClient(this, this, this);
+        fetchGoogleApiClientFragment();
 
-        if(savedInstanceState != null){
+        if (getApiClient() == null) {
+
+            apiClientFragment.setApiClient(GooglePlayGame.getClient(this, this, this));
+        } else {
+
+            getApiClient().registerConnectionCallbacks(this);
+            getApiClient().registerConnectionFailedListener(this);
+        }
+
+        if (savedInstanceState != null) {
 
             resolvingError = savedInstanceState.getBoolean(RESOLVING_ERROR_KEY, false);
+            loadingCanceled = savedInstanceState.getBoolean(LOADING_CANCELED_KEY, false);
+        }
+    }
+
+    private void fetchGoogleApiClientFragment() {
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        Fragment fragment = fragmentManager.findFragmentByTag(GOOGLE_API_CLIENT_FRAGMENT_TAG);
+
+        if (fragment != null && fragment instanceof GoogleApiClientFragment) {
+
+            apiClientFragment = (GoogleApiClientFragment) fragment;
+        } else {
+
+            apiClientFragment = new GoogleApiClientFragment();
+            fragmentManager.beginTransaction().add(apiClientFragment, GOOGLE_API_CLIENT_FRAGMENT_TAG).commit();
         }
     }
 
@@ -66,10 +97,10 @@ public abstract class GooglePlayActivity extends FragmentActivity implements Goo
 
         super.onStart();
 
-        if (!resolvingError) {
+        if (!resolvingError && !loadingCanceled) {
 
             Log.d(GooglePlayActivity.class.getName(), "Connect");
-            apiClient.connect();
+            getApiClient().connect();
         }
     }
 
@@ -80,20 +111,21 @@ public abstract class GooglePlayActivity extends FragmentActivity implements Goo
         super.onSaveInstanceState(save);
 
         save.putBoolean(RESOLVING_ERROR_KEY, resolvingError);
+        save.putBoolean(LOADING_CANCELED_KEY, loadingCanceled);
     }
 
     @Override
     protected void onStop() {
         Log.d(GooglePlayActivity.class.getName(), "onStop");
 
-        apiClient.disconnect();
+        getApiClient().disconnect();
 
         super.onStop();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(GooglePlayActivity.class.getName(), "onActivityResult [requestCode, resultCode] "+requestCode+" "+resultCode);
+        Log.d(GooglePlayActivity.class.getName(), "onActivityResult [requestCode, resultCode] " + requestCode + " " + resultCode);
 
         if (requestCode == RESOLVE_ERROR_REQUEST) {
 
@@ -102,14 +134,16 @@ public abstract class GooglePlayActivity extends FragmentActivity implements Goo
             if (resultCode == RESULT_OK) {
 
                 retryConnecting();
-            }else if(resultCode == RESULT_CANCELED){
+            } else {
 
-                onUserAbortedConnection();
+                loadingCanceled = true;
+
+                onUserAbortedConnection(resultCode);
             }
         }
     }
 
-    protected abstract void onUserAbortedConnection();
+    protected abstract void onUserAbortedConnection(int resultCode);
 
     protected void retryConnecting() {
         Log.d(GooglePlayActivity.class.getName(), "retryConnecting");
@@ -117,9 +151,9 @@ public abstract class GooglePlayActivity extends FragmentActivity implements Goo
 
         resolvingError = false;
 
-        if (!apiClient.isConnecting() && !apiClient.isConnected()) {
+        if (!getApiClient().isConnecting() && !getApiClient().isConnected()) {
 
-            apiClient.connect();
+            getApiClient().connect();
         }
     }
 
@@ -173,7 +207,12 @@ public abstract class GooglePlayActivity extends FragmentActivity implements Goo
 
     protected GoogleApiClient getApiClient() {
 
-        return apiClient;
+        if (apiClientFragment == null) {
+
+            return null;
+        }
+
+        return apiClientFragment.getApiClient();
     }
 
     protected boolean isResolvingError() {
@@ -183,7 +222,7 @@ public abstract class GooglePlayActivity extends FragmentActivity implements Goo
 
     protected boolean isConnected() {
 
-        return apiClient.isConnected();
+        return getApiClient().isConnected();
     }
 
 
@@ -206,7 +245,7 @@ public abstract class GooglePlayActivity extends FragmentActivity implements Goo
             Log.d(GooglePlayActivity.class.getName(), "onDismiss");
 
             GooglePlayActivity activity = ((GooglePlayActivity) getActivity());
-            if(activity == null){
+            if (activity == null) {
 
                 return;
             }

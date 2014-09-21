@@ -36,7 +36,7 @@ public class GameResult extends GooglePlayActivity {
     }
 
     @Override
-    protected void onUserAbortedConnection() {
+    protected void onUserAbortedConnection(int resultCode) {
 
     }
 
