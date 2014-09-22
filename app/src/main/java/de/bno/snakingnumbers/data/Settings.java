@@ -30,8 +30,8 @@ import java.lang.ref.WeakReference;
 public class Settings {
 
 
-    public static final String FIRST_START_KEY = "isFirstStart";
     public static final String FIRST_GAME_KEY = "isFirstGame";
+    public static final String EXPLICIT_OFFLINE_KEY = "isExplicitOffline";
 
     private static WeakReference<SharedPreferences> prefs;
 
@@ -60,16 +60,6 @@ public class Settings {
         return getPrefs(context);
     }
 
-    public boolean isFirstStart(){
-
-        return getPrefs().getBoolean(FIRST_START_KEY, true);
-    }
-
-    public void setFirstStart(boolean firstStart){
-
-        getPrefs().edit().putBoolean(FIRST_START_KEY, firstStart).apply();
-    }
-
     public boolean isFirstGame(){
 
         return getPrefs().getBoolean(FIRST_GAME_KEY, true);
@@ -78,5 +68,15 @@ public class Settings {
     public void setFirstGame(boolean firstGame){
 
         getPrefs().edit().putBoolean(FIRST_GAME_KEY, firstGame).apply();
+    }
+
+    public boolean isExplicitOffline(){
+
+        return getPrefs().getBoolean(EXPLICIT_OFFLINE_KEY, false);
+    }
+
+    public void setExplicitOffline(boolean explicitOffline){
+
+        getPrefs().edit().putBoolean(EXPLICIT_OFFLINE_KEY, explicitOffline).apply();
     }
 }

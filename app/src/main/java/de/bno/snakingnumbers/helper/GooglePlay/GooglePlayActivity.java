@@ -127,6 +127,7 @@ public abstract class GooglePlayActivity extends FragmentActivity implements Goo
 
 
         resolvingError = false;
+        loadingCanceled = false;
 
         if (!getApiClient().isConnecting() && !getApiClient().isConnected()) {
 

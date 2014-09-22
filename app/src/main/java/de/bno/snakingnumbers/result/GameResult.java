@@ -29,7 +29,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.games.GamesActivityResultCodes;
+
 import de.bno.snakingnumbers.R;
+import de.bno.snakingnumbers.data.Settings;
 import de.bno.snakingnumbers.game.gui.Game;
 import de.bno.snakingnumbers.helper.GooglePlay.GooglePlayActivity;
 
@@ -52,6 +55,8 @@ public class GameResult extends GooglePlayActivity implements View.OnClickListen
     private TextView tvClicks;
     private Button btnOk;
 
+    private Settings settings;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -66,12 +71,14 @@ public class GameResult extends GooglePlayActivity implements View.OnClickListen
 
         fetchGUIElements();
         updateGUI();
+
+        settings = new Settings(this);
     }
 
     @Override
     public void onClick(View v) {
 
-        if(v == btnOk){
+        if (v == btnOk) {
 
             finish();
         }
@@ -79,13 +86,24 @@ public class GameResult extends GooglePlayActivity implements View.OnClickListen
 
     @Override
     protected void onUserAbortedConnection(int resultCode) {
+        Log.d(GameResult.class.getName(), "onUserAbortedConnection " + resultCode);
 
+        if (resultCode == RESULT_CANCELED || resultCode == GamesActivityResultCodes.RESULT_LICENSE_FAILED) {
+
+            settings.setExplicitOffline(true);
+        } else if (resultCode == GamesActivityResultCodes.RESULT_RECONNECT_REQUIRED) {
+
+            retryConnecting();
+        } else {
+
+            Log.e(GameResult.class.getName(), "onUserAbortedConnection unhandled " + resultCode);
+        }
     }
 
     @Override
     protected boolean autoStartConnection() {
 
-        return false;
+        return !settings.isExplicitOffline();
     }
 
     @Override
