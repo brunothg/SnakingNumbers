@@ -97,7 +97,7 @@ public abstract class GooglePlayActivity extends FragmentActivity implements Goo
 
         super.onStart();
 
-        if (!resolvingError && !loadingCanceled && (getApiClient() == null || !getApiClient().isConnected())) {
+        if (!resolvingError && !loadingCanceled && (getApiClient() == null || !getApiClient().isConnected()) && autoStartConnection()) {
 
             Log.d(GooglePlayActivity.class.getName(), "Connect");
             getApiClient().connect();
@@ -162,6 +162,8 @@ public abstract class GooglePlayActivity extends FragmentActivity implements Goo
 
         resolvingError = false;
     }
+
+    protected abstract boolean autoStartConnection();
 
     @Override
     public abstract void onConnected(Bundle connectionHint);

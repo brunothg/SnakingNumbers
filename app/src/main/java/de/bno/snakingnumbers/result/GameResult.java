@@ -41,6 +41,12 @@ public class GameResult extends GooglePlayActivity {
     }
 
     @Override
+    protected boolean autoStartConnection() {
+
+        return true;
+    }
+
+    @Override
     public void onConnected(Bundle connectionHint) {
     }
 
