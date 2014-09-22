@@ -60,6 +60,7 @@
         <activity
             android:name=".result.GameResult"
             android:label="@string/title_activity_game_result"
+            android:screenOrientation="sensorPortrait"
             android:parentActivityName=".MainMenu">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

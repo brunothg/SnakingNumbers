@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,7 +33,7 @@ import de.bno.snakingnumbers.R;
 import de.bno.snakingnumbers.game.gui.Game;
 import de.bno.snakingnumbers.helper.GooglePlay.GooglePlayActivity;
 
-public class GameResult extends GooglePlayActivity {
+public class GameResult extends GooglePlayActivity implements View.OnClickListener {
 
     public static final String DIFFICULTY_EXTRA = "difficulty_extra";
     public static final String TIME_EXTRA = "time_extra";
@@ -49,6 +50,7 @@ public class GameResult extends GooglePlayActivity {
     private ImageView ivDifficulty;
     private TextView tvTime;
     private TextView tvClicks;
+    private Button btnOk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,15 @@ public class GameResult extends GooglePlayActivity {
 
         fetchGUIElements();
         updateGUI();
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        if(v == btnOk){
+
+            finish();
+        }
     }
 
     @Override
@@ -118,6 +129,9 @@ public class GameResult extends GooglePlayActivity {
         ivDifficulty = (ImageView) findViewById(R.id.ivDifficulty);
         tvTime = (TextView) findViewById(R.id.tvTime);
         tvClicks = (TextView) findViewById(R.id.tvClicks);
+
+        btnOk = (Button) findViewById(R.id.btnOk);
+        btnOk.setOnClickListener(this);
     }
 
 

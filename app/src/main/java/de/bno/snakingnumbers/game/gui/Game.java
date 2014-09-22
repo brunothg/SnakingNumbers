@@ -73,6 +73,9 @@ public class Game extends FullScreenActivity implements View.OnClickListener, On
 
     private static final String TAG_FIELD_CREATION_FRAGMENT = "field_creation_fragment";
 
+    public static final long MAX_TIME = 99 * 60000;
+    public static final int MAX_CLICKS = 9999;
+
     private FrameLayout centeredFrameLayout;
     private FrameLayout centeredFullScreenFrameLayout;
     private SquareGridLayout gameSquareGridLayout;
@@ -274,6 +277,11 @@ public class Game extends FullScreenActivity implements View.OnClickListener, On
     @Override
     public void onTick(long elapsedTime) {
 
+        if (timer.getElapsedTime() > MAX_TIME) {
+            timer.stop();
+            timer.setElapsedTime(MAX_TIME);
+            finishGame(false);
+        }
         updateTimerTime();
     }
 
@@ -357,6 +365,8 @@ public class Game extends FullScreenActivity implements View.OnClickListener, On
 
         timerPauseButton.setVisibility(ImageButton.INVISIBLE);
         finishButton.setVisibility(Button.VISIBLE);
+
+        updateFinishButtonText();
     }
 
     /**
@@ -398,6 +408,7 @@ public class Game extends FullScreenActivity implements View.OnClickListener, On
 
             timerPauseButton.setVisibility(ImageButton.INVISIBLE);
             finishButton.setVisibility(Button.VISIBLE);
+            updateFinishButtonText();
         }
 
 
@@ -612,7 +623,9 @@ public class Game extends FullScreenActivity implements View.OnClickListener, On
             return;
         }
 
-        clickCount++;
+        if (clickCount < MAX_CLICKS) {
+            clickCount++;
+        }
         updateClickCount();
 
         Zahlenschlange gameLogic = fieldCreationFragment.getZahlenschlange();
@@ -938,5 +951,17 @@ public class Game extends FullScreenActivity implements View.OnClickListener, On
                 Game.this.finish();
             }
         }).show();
+    }
+
+    private void updateFinishButtonText() {
+
+        if (finished == GAME_FINISHED_FAILED) {
+
+            finishButton.setText(R.string.finish_btn_fail);
+            drawPath(fieldCreationFragment.getZahlenschlange().getSolution());
+        } else {
+
+            finishButton.setText(R.string.finish_btn);
+        }
     }
 }

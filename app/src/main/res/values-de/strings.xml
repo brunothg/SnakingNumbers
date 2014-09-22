@@ -47,6 +47,7 @@
     <string name="paused_game_info">Berühren um weiter zu spielen</string>
 
     <string name="finish_btn">Glückwunsch, du hast eine Lösung gefunden.\n\n<b>Beenden</b></string>
+    <string name="finish_btn_fail">Schade, du hast keine Lösung gefunden.\n\n<b>Beenden</b></string>
 
     <string name="operation_not_allowed">Dieser Zug ist nicht erlaubt</string>
 
@@ -69,6 +70,8 @@
     <string name="menu_settings">Einstellungen</string>
 
     <string name="settings_group_game_info">Informationen über das Spiel</string>
+
+    <string name="result_ok">OK</string>
 
     <string-array name="about_values">
         <item>Ziel des Spiels:Vervollständige die Schlange und sei schnell. Es wird deine Aufgabe sein, in so kurzer Zeit wie möglich, einen Weg durch den Zahlenwald zu finden.</item>
