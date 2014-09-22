@@ -133,19 +133,21 @@ public class GameResult extends GooglePlayActivity implements View.OnClickListen
             Log.e(GameResult.class.getName(), "onUserAbortedConnection unhandled " + resultCode);
         }
 
+        settings.setFirstServiceTry(false);
         settings.setOffline(true);
     }
 
     @Override
     protected boolean autoStartConnection() {
 
-        return !settings.isExplicitOffline() && Network.isNetworkConnectionAvailable(this);
+        return (!settings.isExplicitOffline() || settings.isFirstServiceTry()) && Network.isNetworkConnectionAvailable(this);
     }
 
     @Override
     public void onConnected(Bundle connectionHint) {
 
         //TODO: Connected
+        settings.setFirstServiceTry(false);
         settings.setOffline(false);
     }
 
@@ -239,7 +241,7 @@ public class GameResult extends GooglePlayActivity implements View.OnClickListen
     private void checkNetwork() {
         Log.d(GameResult.class.getName(), "checkNetwork " + settings.isExplicitOffline() + " " + Network.isNetworkConnectionAvailable(this));
 
-        if (!Network.isNetworkConnectionAvailable(this) && !settings.isExplicitOffline()) {
+        if (!Network.isNetworkConnectionAvailable(this) && (!settings.isExplicitOffline() || settings.isFirstServiceTry())) {
             Log.d(GameResult.class.getName(), "NetworkErrorDialog");
             new NetworkErrorDialogFragment().show(getSupportFragmentManager(), NETWORK_ERROR_DIALOG_TAG);
         }

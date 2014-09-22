@@ -33,6 +33,7 @@ public class Settings {
     public static final String FIRST_GAME_KEY = "isFirstGame";
     public static final String EXPLICIT_OFFLINE_KEY = "isExplicitOffline";
     public static final String OFFLINE_KEY = "isOffline";
+    public static final String FIRST_SERVICE_TRY_KEY = "isFirstServiceTry";
 
     private static WeakReference<SharedPreferences> prefs;
 
@@ -89,5 +90,15 @@ public class Settings {
     public void setOffline(boolean offline){
 
         getPrefs().edit().putBoolean(OFFLINE_KEY, offline).apply();
+    }
+
+    public boolean isFirstServiceTry(){
+
+        return getPrefs().getBoolean(FIRST_SERVICE_TRY_KEY, true);
+    }
+
+    public void setFirstServiceTry(boolean first){
+
+        getPrefs().edit().putBoolean(FIRST_SERVICE_TRY_KEY, first).apply();
     }
 }
