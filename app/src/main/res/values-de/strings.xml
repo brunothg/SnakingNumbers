@@ -74,8 +74,8 @@
     <string name="settings_group_network">Netzwerk</string>
 
     <string name="settings_explicit_offline_title">Blockiere automatische Anmeldung</string>
-    <string name="settings_explicit_offline_summary">Du wirst automatisch angemeldet und erhälst Erfolge und Highdcores.</string>
-    <string name="settings_explicit_offline_summary_checked">Du wirst nicht automatisch angemeldet und erhälst keine Erfolge und Highdcores.</string>
+    <string name="settings_explicit_offline_summary">Du wirst automatisch angemeldet und erhälst Erfolge und Highscores.</string>
+    <string name="settings_explicit_offline_summary_checked">Du wirst nicht automatisch angemeldet und erhälst keine Erfolge und Highscores.</string>
 
     <string name="result_ok">OK</string>
     <string name="result_error_network_title">Netzwerk nicht verfügbar</string>
