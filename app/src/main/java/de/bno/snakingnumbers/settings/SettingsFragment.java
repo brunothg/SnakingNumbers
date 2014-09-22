@@ -23,6 +23,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.util.Log;
 
 import de.bno.snakingnumbers.R;
 import de.bno.snakingnumbers.data.Settings;
@@ -39,11 +40,13 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
 
         addPreferencesFromResource(R.xml.preferences);
+        updateSummery(getPreferenceScreen().getSharedPreferences(), Settings.EXPLICIT_OFFLINE_KEY);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(SettingsFragment.class.getName(), "onResume");
 
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
@@ -51,6 +54,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     @Override
     public void onPause() {
         super.onPause();
+        Log.d(SettingsFragment.class.getName(), "onPause");
 
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
     }
@@ -58,7 +62,14 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
-        if (key == Settings.EXPLICIT_OFFLINE_KEY) {
+        Log.d(SettingsFragment.class.getName(), "onSharedPreferenceChanged " + key);
+
+        updateSummery(sharedPreferences, key);
+    }
+
+    private void updateSummery(SharedPreferences sharedPreferences, String key){
+
+        if (key.equals(Settings.EXPLICIT_OFFLINE_KEY)) {
 
             Preference connectionPref = findPreference(key);
 
