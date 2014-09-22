@@ -41,6 +41,7 @@
 
     <string name="timer_format" formatted="false" translatable="false">%02d:%02d:%02d</string>
     <string name="click_count_format" formatted="false" translatable="false">%04d</string>
+    <string name="click_count_format_result" formatted="false" translatable="false">%04d (+%.2f%%)</string>
 
     <string name="tut_goal">Goal of this game</string>
     <string name="tut_goal_info">Find a path from the beginning (upper left corner) to the end (lower right corner) in as less time as possible.</string>

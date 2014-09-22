@@ -28,6 +28,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.view.View;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -47,7 +48,7 @@ public abstract class GooglePlayActivity extends FragmentActivity implements Goo
     private static final String ERROR_DIALOG_TAG = "errorDialog";
     private static final String GOOGLE_API_CLIENT_FRAGMENT_TAG = "googleApiClientFragment";
 
-    private GoogleApiClientFragment apiClientFragment;
+    GoogleApiClient apiClient;
     private boolean resolvingError = false;
     private boolean loadingCanceled = false;
 
@@ -57,16 +58,6 @@ public abstract class GooglePlayActivity extends FragmentActivity implements Goo
 
         super.onCreate(savedInstanceState);
 
-        fetchGoogleApiClientFragment();
-
-        if (getApiClient() == null) {
-
-            apiClientFragment.setApiClient(GooglePlayGame.getClient(this, this, this));
-        } else {
-
-            getApiClient().registerConnectionCallbacks(this);
-            getApiClient().registerConnectionFailedListener(this);
-        }
 
         if (savedInstanceState != null) {
 
@@ -75,27 +66,13 @@ public abstract class GooglePlayActivity extends FragmentActivity implements Goo
         }
     }
 
-    private void fetchGoogleApiClientFragment() {
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-
-        Fragment fragment = fragmentManager.findFragmentByTag(GOOGLE_API_CLIENT_FRAGMENT_TAG);
-
-        if (fragment != null && fragment instanceof GoogleApiClientFragment) {
-
-            apiClientFragment = (GoogleApiClientFragment) fragment;
-        } else {
-
-            apiClientFragment = new GoogleApiClientFragment();
-            fragmentManager.beginTransaction().add(apiClientFragment, GOOGLE_API_CLIENT_FRAGMENT_TAG).commit();
-        }
-    }
-
     @Override
     protected void onStart() {
         Log.d(GooglePlayActivity.class.getName(), "onStart");
+        apiClient = GooglePlayGame.getClient(this, this, this, getViewForPopups());
 
         super.onStart();
+
 
         if (!resolvingError && !loadingCanceled && (getApiClient() == null || !getApiClient().isConnected()) && autoStartConnection()) {
 
@@ -209,12 +186,7 @@ public abstract class GooglePlayActivity extends FragmentActivity implements Goo
 
     protected GoogleApiClient getApiClient() {
 
-        if (apiClientFragment == null) {
-
-            return null;
-        }
-
-        return apiClientFragment.getApiClient();
+        return apiClient;
     }
 
     protected boolean isResolvingError() {
@@ -256,4 +228,6 @@ public abstract class GooglePlayActivity extends FragmentActivity implements Goo
         }
 
     }
+
+    protected abstract View getViewForPopups();
 }

@@ -48,7 +48,7 @@
         <activity
             android:name=".tutorial.Tutorial"
             android:label="@string/title_activity_tut"
-            android:screenOrientation="sensorPortrait"></activity>
+            android:screenOrientation="sensorPortrait" />
         <activity
             android:name=".settings.SettingsActivity"
             android:label="@string/title_activity_settings"

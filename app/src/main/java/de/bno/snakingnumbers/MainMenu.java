@@ -18,6 +18,7 @@
 
 package de.bno.snakingnumbers;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -30,7 +31,6 @@ import android.widget.Button;
 import de.bno.snakingnumbers.about.About;
 import de.bno.snakingnumbers.data.Settings;
 import de.bno.snakingnumbers.game.gui.Game;
-import de.bno.snakingnumbers.helper.FullScreenActivity;
 import de.bno.snakingnumbers.result.GameResult;
 import de.bno.snakingnumbers.settings.SettingsActivity;
 import de.bno.snakingnumbers.tutorial.Tutorial;
@@ -38,7 +38,7 @@ import de.bno.snakingnumbers.tutorial.Tutorial;
 /**
  * Created by marvin on 09.09.14.
  */
-public class MainMenu extends FullScreenActivity implements View.OnClickListener {
+public class MainMenu extends Activity implements View.OnClickListener {
 
     private static final int REQUEST_GAME_RESULT = 0x01;
     private static final int REQUEST_TUT_RESULT = 0x02;
@@ -120,7 +120,7 @@ public class MainMenu extends FullScreenActivity implements View.OnClickListener
 
             if (elapsedTime > -1 && difficulty > -1 && clickCount > -1 && maxNumber > -1) {
 
-                //TODO: Game result
+                gotoResultActivity(difficulty, elapsedTime, clickCount, maxNumber);
             }
         }
     }
@@ -167,6 +167,18 @@ public class MainMenu extends FullScreenActivity implements View.OnClickListener
         }
 
 
+    }
+
+    private void gotoResultActivity(int difficulty, long time, int clicks, int max){
+
+        Intent game_result_intent = new Intent(this, GameResult.class);
+
+        game_result_intent.putExtra(GameResult.DIFFICULTY_EXTRA, difficulty);
+        game_result_intent.putExtra(GameResult.TIME_EXTRA, time);
+        game_result_intent.putExtra(GameResult.CLICK_EXTRA, clicks);
+        game_result_intent.putExtra(GameResult.MAX_NUMBER_EXTRA, max);
+
+        startActivity(game_result_intent);
     }
 
     private void gotoSettingsActivity(){

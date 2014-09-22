@@ -22,6 +22,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.view.View;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -35,7 +36,7 @@ import com.google.android.gms.games.Games;
 public class GooglePlayGame {
 
 
-    public static GoogleApiClient getClient(Context context, GoogleApiClient.ConnectionCallbacks callbacks, GoogleApiClient.OnConnectionFailedListener failedListener) {
+    public static GoogleApiClient getClient(Context context, GoogleApiClient.ConnectionCallbacks callbacks, GoogleApiClient.OnConnectionFailedListener failedListener, View popupView) {
 
         GoogleApiClient.Builder builder = new GoogleApiClient.Builder(context);
 
@@ -50,6 +51,7 @@ public class GooglePlayGame {
         }
 
         builder = builder.addApi(Games.API).addScope(Games.SCOPE_GAMES);
+        builder = builder.setViewForPopups(popupView);
 
         return builder.build();
     }
