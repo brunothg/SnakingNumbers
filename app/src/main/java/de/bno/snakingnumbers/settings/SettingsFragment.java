@@ -64,6 +64,11 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
         Log.d(SettingsFragment.class.getName(), "onSharedPreferenceChanged " + key);
 
+        if (key.equals(Settings.EXPLICIT_OFFLINE_KEY)) {
+
+            setLogin(sharedPreferences.getBoolean(key, true));
+        }
+
         updateSummery(sharedPreferences, key);
     }
 
@@ -81,5 +86,10 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 connectionPref.setSummary(getString(R.string.settings_explicit_offline_summary));
             }
         }
+    }
+
+    private void setLogin(boolean logOut){
+
+        //TODO: LogOut
     }
 }
