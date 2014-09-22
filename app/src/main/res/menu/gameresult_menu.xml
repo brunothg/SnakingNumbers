@@ -20,11 +20,11 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="de.bno.snakingnumbers.MainMenu" >
+    tools:context="de.bno.snakingnumbers.result.GameResult" >
 
-    <item android:id="@+id/action_settings"
-        android:title="@string/menu_settings"
-        android:icon="@drawable/settings"
+    <item android:id="@+id/action_refresh"
+        android:title="@string/menu_refresh"
+        android:icon="@drawable/refresh"
         android:orderInCategory="100"
         android:showAsAction="ifRoom" />
 </menu>

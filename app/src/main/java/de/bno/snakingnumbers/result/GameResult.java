@@ -19,8 +19,12 @@
 package de.bno.snakingnumbers.result;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,12 +33,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.games.GamesActivityResultCodes;
 
 import de.bno.snakingnumbers.R;
 import de.bno.snakingnumbers.data.Settings;
 import de.bno.snakingnumbers.game.gui.Game;
 import de.bno.snakingnumbers.helper.GooglePlay.GooglePlayActivity;
+import de.bno.snakingnumbers.helper.Network;
 
 public class GameResult extends GooglePlayActivity implements View.OnClickListener {
 
@@ -43,6 +49,7 @@ public class GameResult extends GooglePlayActivity implements View.OnClickListen
     public static final String CLICK_EXTRA = "click_extra";
     public static final String MAX_NUMBER_EXTRA = "max_number_extra";
 
+    private static final String NETWORK_ERROR_DIALOG_TAG = "network_error_dialog_tag";
 
     private int difficulty;
     private long time;
@@ -56,6 +63,7 @@ public class GameResult extends GooglePlayActivity implements View.OnClickListen
     private Button btnOk;
 
     private Settings settings;
+    private boolean playServiceWorkDone = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +81,32 @@ public class GameResult extends GooglePlayActivity implements View.OnClickListen
         updateGUI();
 
         settings = new Settings(this);
+
+        checkNetwork();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.gameresult_menu, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == R.id.action_refresh) {
+
+            settings.setExplicitOffline(false);
+            retryConnecting();
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -93,25 +127,40 @@ public class GameResult extends GooglePlayActivity implements View.OnClickListen
             settings.setExplicitOffline(true);
         } else if (resultCode == GamesActivityResultCodes.RESULT_RECONNECT_REQUIRED) {
 
-            retryConnecting();
+            reconnect();
         } else {
 
             Log.e(GameResult.class.getName(), "onUserAbortedConnection unhandled " + resultCode);
         }
+
+        settings.setOffline(true);
     }
 
     @Override
     protected boolean autoStartConnection() {
 
-        return !settings.isExplicitOffline();
+        return !settings.isExplicitOffline() && Network.isNetworkConnectionAvailable(this);
     }
 
     @Override
     public void onConnected(Bundle connectionHint) {
+
+        settings.setOffline(false);
     }
 
     @Override
     public void onConnectionSuspended(int cause) {
+
+        retryConnecting();
+    }
+
+    @Override
+    protected void retryConnecting() {
+
+        if (!playServiceWorkDone) {
+
+            super.retryConnecting();
+        }
     }
 
     protected View getViewForPopups() {
@@ -186,4 +235,34 @@ public class GameResult extends GooglePlayActivity implements View.OnClickListen
         tvClicks.setText(String.format(getString(R.string.click_count_format_result), clicks, prozent));
     }
 
+    private void checkNetwork() {
+        Log.d(GameResult.class.getName(), "checkNetwork " + settings.isExplicitOffline() + " " + Network.isNetworkConnectionAvailable(this));
+
+        if (!Network.isNetworkConnectionAvailable(this) && !settings.isExplicitOffline()) {
+            Log.d(GameResult.class.getName(), "NetworkErrorDialog");
+            new NetworkErrorDialogFragment().show(getSupportFragmentManager(), NETWORK_ERROR_DIALOG_TAG);
+        }
+    }
+
+    public static class NetworkErrorDialogFragment extends DialogFragment {
+
+        public NetworkErrorDialogFragment() {
+
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.result_error_network_title).setMessage(R.string.result_error_network_message).setPositiveButton(android.R.string.ok, null);
+
+            return builder.create();
+        }
+
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+
+        }
+
+    }
 }

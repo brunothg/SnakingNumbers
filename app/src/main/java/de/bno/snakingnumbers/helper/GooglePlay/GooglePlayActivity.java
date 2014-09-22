@@ -135,6 +135,11 @@ public abstract class GooglePlayActivity extends FragmentActivity implements Goo
         }
     }
 
+    protected void reconnect(){
+
+        getApiClient().reconnect();
+    }
+
     private void onDialogDismissed() {
         Log.d(GooglePlayActivity.class.getName(), "onDialogDismissed");
 

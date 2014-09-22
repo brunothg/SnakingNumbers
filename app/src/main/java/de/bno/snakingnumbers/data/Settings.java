@@ -32,6 +32,7 @@ public class Settings {
 
     public static final String FIRST_GAME_KEY = "isFirstGame";
     public static final String EXPLICIT_OFFLINE_KEY = "isExplicitOffline";
+    public static final String OFFLINE_KEY = "isOffline";
 
     private static WeakReference<SharedPreferences> prefs;
 
@@ -78,5 +79,15 @@ public class Settings {
     public void setExplicitOffline(boolean explicitOffline){
 
         getPrefs().edit().putBoolean(EXPLICIT_OFFLINE_KEY, explicitOffline).apply();
+    }
+
+    public boolean isOffline(){
+
+        return getPrefs().getBoolean(OFFLINE_KEY, true);
+    }
+
+    public void setOffline(boolean offline){
+
+        getPrefs().edit().putBoolean(OFFLINE_KEY, offline).apply();
     }
 }
