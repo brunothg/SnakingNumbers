@@ -21,7 +21,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory android:title="@string/settings_group_network">
-        <CheckBoxPreference android:key="isExplicitOffline" android:title="@string/settings_explicit_offline_title" android:summary="@string/settings_explicit_offline_summary" android:defaultValue="false" />
+        <CheckBoxPreference android:key="isExplicitOffline" android:title="@string/settings_explicit_offline_title" android:summary="@string/settings_explicit_offline_summary_checked" android:defaultValue="true" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/settings_group_game_info">

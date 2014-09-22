@@ -18,23 +18,57 @@
 
 package de.bno.snakingnumbers.settings;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
 
 import de.bno.snakingnumbers.R;
+import de.bno.snakingnumbers.data.Settings;
 
 /**
  * Created by marvin on 17.09.14.
  */
-public class SettingsFragment extends PreferenceFragment {
+public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
+
         addPreferencesFromResource(R.xml.preferences);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
+        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
+        if (key == Settings.EXPLICIT_OFFLINE_KEY) {
+
+            Preference connectionPref = findPreference(key);
+
+            if (sharedPreferences.getBoolean(key, true)) {
+
+                connectionPref.setSummary(getString(R.string.settings_explicit_offline_summary_checked));
+            } else {
+
+                connectionPref.setSummary(getString(R.string.settings_explicit_offline_summary));
+            }
+        }
+    }
 }

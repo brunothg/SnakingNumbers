@@ -73,7 +73,7 @@ public class Settings {
 
     public boolean isExplicitOffline(){
 
-        return getPrefs().getBoolean(EXPLICIT_OFFLINE_KEY, false);
+        return getPrefs().getBoolean(EXPLICIT_OFFLINE_KEY, true);
     }
 
     public void setExplicitOffline(boolean explicitOffline){

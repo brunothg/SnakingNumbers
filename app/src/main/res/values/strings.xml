@@ -62,7 +62,8 @@
     <string name="settings_group_network">Network</string>
 
     <string name="settings_explicit_offline_title">Block automatic login</string>
-    <string name="settings_explicit_offline_summary">If checked your won\'t be logged in automatically. Without a login you can\'t get high scores or achievements.</string>
+    <string name="settings_explicit_offline_summary">You will be logged in automatically and can get high scores or achievements.</string>
+    <string name="settings_explicit_offline_summary_checked">You won\'t be logged in automatically and can\'t get high scores or achievements.</string>
 
     <string name="result_ok">OK</string>
     <string name="result_error_network_title">Network not available</string>
