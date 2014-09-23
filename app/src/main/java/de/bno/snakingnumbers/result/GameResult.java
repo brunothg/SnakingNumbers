@@ -18,7 +18,6 @@
 
 package de.bno.snakingnumbers.result;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -33,13 +32,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.games.GamesActivityResultCodes;
 
 import de.bno.snakingnumbers.R;
 import de.bno.snakingnumbers.data.Settings;
 import de.bno.snakingnumbers.game.gui.Game;
+import de.bno.snakingnumbers.helper.GooglePlay.Achievements;
 import de.bno.snakingnumbers.helper.GooglePlay.GooglePlayActivity;
+import de.bno.snakingnumbers.helper.GooglePlay.Highscores;
 import de.bno.snakingnumbers.helper.Network;
 
 public class GameResult extends GooglePlayActivity implements View.OnClickListener {
@@ -281,6 +281,7 @@ public class GameResult extends GooglePlayActivity implements View.OnClickListen
         }
 
         Log.d(GameResult.class.getName(), "FirstSignAttemptDialog");
+        settings.setFirstServiceTry(false);
         FirstSignAttemptDialogFragment.create(settings, this).show(getSupportFragmentManager(), FIRST_SIGN_ATTEMPT_DIALOG_TAG);
     }
 
@@ -331,7 +332,9 @@ public class GameResult extends GooglePlayActivity implements View.OnClickListen
 
     private void doPlayServiceWork() {
 
-        //TODO: PlayService work
+
+        Achievements.handleGameResult(difficulty, time, clicks, prozent, getApiClient(), this);
+        Highscores.handleGameResult(difficulty, (Game.MAX_TIME + Game.MAX_CLICKS) - (time + clicks), getApiClient());
 
         playServiceWorkDone = true;
     }
