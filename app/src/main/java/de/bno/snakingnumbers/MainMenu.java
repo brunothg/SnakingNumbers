@@ -18,9 +18,13 @@
 
 package de.bno.snakingnumbers;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -52,7 +56,7 @@ public class MainMenu extends GooglePlayActivity implements View.OnClickListener
     private static final int REQUEST_LEADERBOARDS_RESULT = 0x04;
 
     private static final String SIGN_ATTEMPT_DIALOG_TAG = "singin_attempt";
-
+    private static final String CHOOSE_DIFFICULTY_DIALOG_TAG = "chooseDifficulty";
     private static final String NETWORK_ERROR_DIALOG_TAG = "networkErrorDialog";
 
     private Button btn_easy_game;
@@ -110,10 +114,10 @@ public class MainMenu extends GooglePlayActivity implements View.OnClickListener
         } else if (v == btn_easy_game || v == btn_medium_game || v == btn_hard_game) {
 
             gotoGameActivity(v);
-        }else if(v == btnHighscore){
+        } else if (v == btnHighscore) {
 
-            gotoLeaderboardActivity();
-        }else if(v == btnAchievement){
+            gotoLeaderboardActivity(-1);
+        } else if (v == btnAchievement) {
 
             gotoAchievementsActivity();
         }
@@ -262,7 +266,7 @@ public class MainMenu extends GooglePlayActivity implements View.OnClickListener
 
     private void gotoAchievementsActivity() {
 
-        if(!isConnected()){
+        if (!isConnected()) {
             GooglePlayGame.FirstSignAttemptDialogFragment.create(settings, this).show(getSupportFragmentManager(), SIGN_ATTEMPT_DIALOG_TAG);
             return;
         }
@@ -270,14 +274,23 @@ public class MainMenu extends GooglePlayActivity implements View.OnClickListener
         Achievements.displayAchievements(REQUEST_ACHIEVEMENTS_RESULT, this, getApiClient());
     }
 
-    private void gotoLeaderboardActivity() {
+    private void gotoLeaderboardActivity(int difficulty) {
 
-        if(!isConnected()){
+        if (!isConnected()) {
             GooglePlayGame.FirstSignAttemptDialogFragment.create(settings, this).show(getSupportFragmentManager(), SIGN_ATTEMPT_DIALOG_TAG);
             return;
         }
 
-        Highscores.displayHighscores(REQUEST_LEADERBOARDS_RESULT, Highscores.getDifficultyLeaderBoardId(Game.DIFFICULTY_EASY, this), this, getApiClient());
+        switch (difficulty) {
+            case Game.DIFFICULTY_EASY:
+            case Game.DIFFICULTY_MEDIUM:
+            case Game.DIFFICULTY_HARD:
+                Highscores.displayHighscores(REQUEST_LEADERBOARDS_RESULT, Highscores.getDifficultyLeaderBoardId(difficulty, this), this, getApiClient());
+                break;
+            default:
+                ChooseDificultyDialogFragment.create(this).show(getSupportFragmentManager(), CHOOSE_DIFFICULTY_DIALOG_TAG);
+                break;
+        }
     }
 
     @Override
@@ -334,5 +347,61 @@ public class MainMenu extends GooglePlayActivity implements View.OnClickListener
     protected View getViewForPopups() {
 
         return findViewById(R.id.main_layout);
+    }
+
+    public static class ChooseDificultyDialogFragment extends DialogFragment {
+
+        MainMenu mainMenu;
+
+        public static ChooseDificultyDialogFragment create(MainMenu menu) {
+
+            ChooseDificultyDialogFragment ret = new ChooseDificultyDialogFragment();
+            ret.mainMenu = menu;
+
+            return ret;
+        }
+
+        public ChooseDificultyDialogFragment() {
+
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.highscore_difficulty_title).setMessage(R.string.highscore_difficulty_message).setNegativeButton(R.string.game_easy, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    selection(Game.DIFFICULTY_EASY);
+                }
+            }).setNeutralButton(R.string.game_medium, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    selection(Game.DIFFICULTY_MEDIUM);
+                }
+            }).setPositiveButton(R.string.game_hard, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    selection(Game.DIFFICULTY_HARD);
+                }
+            });
+
+            return builder.create();
+        }
+
+        private void selection(int difficulty) {
+
+            if (mainMenu == null) {
+                return;
+            }
+
+            mainMenu.gotoLeaderboardActivity(difficulty);
+        }
+
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+
+        }
+
     }
 }
