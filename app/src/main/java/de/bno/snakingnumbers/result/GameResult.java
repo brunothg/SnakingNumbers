@@ -134,7 +134,6 @@ public class GameResult extends GooglePlayActivity implements View.OnClickListen
         }
 
         settings.setFirstServiceTry(false);
-        settings.setOffline(true);
     }
 
     @Override
@@ -147,7 +146,7 @@ public class GameResult extends GooglePlayActivity implements View.OnClickListen
     public void onConnected(Bundle connectionHint) {
 
         settings.setFirstServiceTry(false);
-        settings.setOffline(false);
+        settings.setExplicitOffline(false);
         //TODO: Connected
     }
 
