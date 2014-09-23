@@ -67,9 +67,12 @@
 
     <string name="result_ok">OK</string>
     <string name="result_error_network_title">Network not available</string>
-    <string name="result_error_network_message">Without a network connection no high score or achievement can be submitted.\nPress refresh button for a new try.</string>
+    <string name="result_error_network_message">Without a network connection no high score or achievement can be submitted.\nRetry after you made network available.</string>
     <string name="result_first_sign_title">Sign in</string>
     <string name="result_first_sign_message">To get achievements and high scores you have to sign in.\nYou can change your selection at any time in the settings.</string>
+
+    <string name="highscore">Highscores</string>
+    <string name="achievements">Achievements</string>
 
     <string name="license" translatable="false">License:Snaking Numbers an Android game.\nCopyright (c) 2014 Marvin Bruns\n\nThis program is free software: you can redistribute it and/or modify\nit under the terms of the GNU General Public License as published by\nthe Free Software Foundation, either version 3 of the License, or\n(at your option) any later version.\n\nThis program is distributed in the hope that it will be useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\nGNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License\nalong with this program.  If not, see &lt;http://www.gnu.org/licenses/> \n</string>
 

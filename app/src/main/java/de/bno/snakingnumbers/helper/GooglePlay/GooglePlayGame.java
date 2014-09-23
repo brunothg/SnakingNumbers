@@ -19,15 +19,22 @@
 package de.bno.snakingnumbers.helper.GooglePlay;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.View;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
+
+import de.bno.snakingnumbers.R;
+import de.bno.snakingnumbers.data.Settings;
+import de.bno.snakingnumbers.result.GameResult;
 
 
 /**
@@ -56,4 +63,70 @@ public class GooglePlayGame {
         return builder.build();
     }
 
+    public static class NetworkErrorDialogFragment extends DialogFragment {
+
+        public NetworkErrorDialogFragment() {
+
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.result_error_network_title).setMessage(R.string.result_error_network_message).setPositiveButton(android.R.string.ok, null);
+
+            return builder.create();
+        }
+
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+
+        }
+
+    }
+
+    public static class FirstSignAttemptDialogFragment extends DialogFragment {
+
+        public Settings settings;
+        public GooglePlayActivity gameResult;
+
+        public static FirstSignAttemptDialogFragment create(Settings setting, GooglePlayActivity game) {
+
+            FirstSignAttemptDialogFragment ret = new FirstSignAttemptDialogFragment();
+            ret.settings = setting;
+            ret.gameResult = game;
+
+            return ret;
+        }
+
+        public FirstSignAttemptDialogFragment() {
+
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.result_first_sign_title).setMessage(R.string.result_first_sign_message).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    if (settings == null || gameResult == null) {
+                        return;
+                    }
+
+                    settings.setExplicitOffline(false);
+                    gameResult.retryConnecting();
+                }
+            }).setNegativeButton(android.R.string.no, null);
+
+            return builder.create();
+        }
+
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+
+        }
+
+    }
 }

@@ -24,9 +24,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 
@@ -46,7 +44,6 @@ public abstract class GooglePlayActivity extends FragmentActivity implements Goo
     protected static final int RESOLVE_ERROR_REQUEST = 1001;
 
     private static final String ERROR_DIALOG_TAG = "errorDialog";
-    private static final String GOOGLE_API_CLIENT_FRAGMENT_TAG = "googleApiClientFragment";
 
     GoogleApiClient apiClient;
     private boolean resolvingError = false;

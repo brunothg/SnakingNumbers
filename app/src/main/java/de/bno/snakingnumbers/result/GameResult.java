@@ -39,6 +39,7 @@ import de.bno.snakingnumbers.data.Settings;
 import de.bno.snakingnumbers.game.gui.Game;
 import de.bno.snakingnumbers.helper.GooglePlay.Achievements;
 import de.bno.snakingnumbers.helper.GooglePlay.GooglePlayActivity;
+import de.bno.snakingnumbers.helper.GooglePlay.GooglePlayGame;
 import de.bno.snakingnumbers.helper.GooglePlay.Highscores;
 import de.bno.snakingnumbers.helper.Network;
 
@@ -248,31 +249,11 @@ public class GameResult extends GooglePlayActivity implements View.OnClickListen
 
         if (!Network.isNetworkConnectionAvailable(this) && (!settings.isExplicitOffline())) {
             Log.d(GameResult.class.getName(), "NetworkErrorDialog");
-            new NetworkErrorDialogFragment().show(getSupportFragmentManager(), NETWORK_ERROR_DIALOG_TAG);
+            new GooglePlayGame.NetworkErrorDialogFragment().show(getSupportFragmentManager(), NETWORK_ERROR_DIALOG_TAG);
         }
     }
 
-    public static class NetworkErrorDialogFragment extends DialogFragment {
 
-        public NetworkErrorDialogFragment() {
-
-        }
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle(R.string.result_error_network_title).setMessage(R.string.result_error_network_message).setPositiveButton(android.R.string.ok, null);
-
-            return builder.create();
-        }
-
-        @Override
-        public void onDismiss(DialogInterface dialog) {
-
-        }
-
-    }
 
     private void checkFirstSinginAttempt() {
 
@@ -282,53 +263,10 @@ public class GameResult extends GooglePlayActivity implements View.OnClickListen
 
         Log.d(GameResult.class.getName(), "FirstSignAttemptDialog");
         settings.setFirstServiceTry(false);
-        FirstSignAttemptDialogFragment.create(settings, this).show(getSupportFragmentManager(), FIRST_SIGN_ATTEMPT_DIALOG_TAG);
+        GooglePlayGame.FirstSignAttemptDialogFragment.create(settings, this).show(getSupportFragmentManager(), FIRST_SIGN_ATTEMPT_DIALOG_TAG);
     }
 
-    public static class FirstSignAttemptDialogFragment extends DialogFragment {
 
-        public Settings settings;
-        public GameResult gameResult;
-
-        public static FirstSignAttemptDialogFragment create(Settings setting, GameResult game) {
-
-            FirstSignAttemptDialogFragment ret = new FirstSignAttemptDialogFragment();
-            ret.settings = setting;
-            ret.gameResult = game;
-
-            return ret;
-        }
-
-        public FirstSignAttemptDialogFragment() {
-
-        }
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle(R.string.result_first_sign_title).setMessage(R.string.result_first_sign_message).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-
-                    if (settings == null || gameResult == null) {
-                        return;
-                    }
-
-                    settings.setExplicitOffline(false);
-                    gameResult.retryConnecting();
-                }
-            }).setNegativeButton(android.R.string.no, null);
-
-            return builder.create();
-        }
-
-        @Override
-        public void onDismiss(DialogInterface dialog) {
-
-        }
-
-    }
 
     private void doPlayServiceWork() {
 

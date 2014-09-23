@@ -18,7 +18,6 @@
 
 package de.bno.snakingnumbers;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -28,9 +27,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.games.GamesActivityResultCodes;
+
 import de.bno.snakingnumbers.about.About;
 import de.bno.snakingnumbers.data.Settings;
 import de.bno.snakingnumbers.game.gui.Game;
+import de.bno.snakingnumbers.helper.GooglePlay.Achievements;
+import de.bno.snakingnumbers.helper.GooglePlay.GooglePlayActivity;
+import de.bno.snakingnumbers.helper.GooglePlay.GooglePlayGame;
+import de.bno.snakingnumbers.helper.GooglePlay.Highscores;
+import de.bno.snakingnumbers.helper.Network;
 import de.bno.snakingnumbers.result.GameResult;
 import de.bno.snakingnumbers.settings.SettingsActivity;
 import de.bno.snakingnumbers.tutorial.Tutorial;
@@ -38,16 +44,27 @@ import de.bno.snakingnumbers.tutorial.Tutorial;
 /**
  * Created by marvin on 09.09.14.
  */
-public class MainMenu extends Activity implements View.OnClickListener {
+public class MainMenu extends GooglePlayActivity implements View.OnClickListener {
 
     private static final int REQUEST_GAME_RESULT = 0x01;
     private static final int REQUEST_TUT_RESULT = 0x02;
+    private static final int REQUEST_ACHIEVEMENTS_RESULT = 0x03;
+    private static final int REQUEST_LEADERBOARDS_RESULT = 0x04;
+
+    private static final String SIGN_ATTEMPT_DIALOG_TAG = "singin_attempt";
+
+    private static final String NETWORK_ERROR_DIALOG_TAG = "networkErrorDialog";
 
     private Button btn_easy_game;
     private Button btn_medium_game;
     private Button btn_hard_game;
 
+    private Button btnHighscore;
+    private Button btnAchievement;
+
     private Button btn_about;
+
+    private Settings settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +72,12 @@ public class MainMenu extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
+        settings = new Settings(this);
+
         fetchGUIElements();
         createDefaultSettings();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -90,6 +110,12 @@ public class MainMenu extends Activity implements View.OnClickListener {
         } else if (v == btn_easy_game || v == btn_medium_game || v == btn_hard_game) {
 
             gotoGameActivity(v);
+        }else if(v == btnHighscore){
+
+            gotoLeaderboardActivity();
+        }else if(v == btnAchievement){
+
+            gotoAchievementsActivity();
         }
     }
 
@@ -151,6 +177,12 @@ public class MainMenu extends Activity implements View.OnClickListener {
 
         btn_about = (Button) findViewById(R.id.btn_about);
         btn_about.setOnClickListener(this);
+
+        btnHighscore = (Button) findViewById(R.id.btnHighscore);
+        btnHighscore.setOnClickListener(this);
+
+        btnAchievement = (Button) findViewById(R.id.btnAchievement);
+        btnAchievement.setOnClickListener(this);
     }
 
     private void gotoGameActivity(View v) {
@@ -169,7 +201,7 @@ public class MainMenu extends Activity implements View.OnClickListener {
 
     }
 
-    private void gotoResultActivity(int difficulty, long time, int clicks, int max){
+    private void gotoResultActivity(int difficulty, long time, int clicks, int max) {
 
         Intent game_result_intent = new Intent(this, GameResult.class);
 
@@ -181,7 +213,7 @@ public class MainMenu extends Activity implements View.OnClickListener {
         startActivity(game_result_intent);
     }
 
-    private void gotoSettingsActivity(){
+    private void gotoSettingsActivity() {
 
         Intent settings_intent = new Intent(this, SettingsActivity.class);
         startActivity(settings_intent);
@@ -191,7 +223,7 @@ public class MainMenu extends Activity implements View.OnClickListener {
 
         Settings settings = new Settings(this);
 
-        if(settings.isFirstGame()){
+        if (settings.isFirstGame()) {
 
             gotoTutorialActivity(difficulty);
             return;
@@ -220,9 +252,87 @@ public class MainMenu extends Activity implements View.OnClickListener {
         startActivityForResult(tut_intent, REQUEST_TUT_RESULT);
     }
 
-    private void createDefaultSettings(){
+    private void createDefaultSettings() {
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
     }
 
+
+    //Game Services
+
+    private void gotoAchievementsActivity() {
+
+        if(!isConnected()){
+            GooglePlayGame.FirstSignAttemptDialogFragment.create(settings, this).show(getSupportFragmentManager(), SIGN_ATTEMPT_DIALOG_TAG);
+            return;
+        }
+
+        Achievements.displayAchievements(REQUEST_ACHIEVEMENTS_RESULT, this, getApiClient());
+    }
+
+    private void gotoLeaderboardActivity() {
+
+        if(!isConnected()){
+            GooglePlayGame.FirstSignAttemptDialogFragment.create(settings, this).show(getSupportFragmentManager(), SIGN_ATTEMPT_DIALOG_TAG);
+            return;
+        }
+
+        Highscores.displayHighscores(REQUEST_LEADERBOARDS_RESULT, Highscores.getDifficultyLeaderBoardId(Game.DIFFICULTY_EASY, this), this, getApiClient());
+    }
+
+    @Override
+    protected void onUserAbortedConnection(int resultCode) {
+
+        Log.d(GameResult.class.getName(), "onUserAbortedConnection " + resultCode);
+
+        if (resultCode == RESULT_CANCELED || resultCode == GamesActivityResultCodes.RESULT_LICENSE_FAILED) {
+
+            settings.setExplicitOffline(true);
+        } else if (resultCode == GamesActivityResultCodes.RESULT_RECONNECT_REQUIRED) {
+
+            reconnect();
+        } else if (resultCode == GamesActivityResultCodes.RESULT_NETWORK_FAILURE) {
+
+            checkNetwork();
+        } else {
+
+            Log.e(GameResult.class.getName(), "onUserAbortedConnection unhandled " + resultCode);
+        }
+
+        settings.setFirstServiceTry(false);
+    }
+
+    private void checkNetwork() {
+        Log.d(GameResult.class.getName(), "checkNetwork " + settings.isExplicitOffline() + " " + Network.isNetworkConnectionAvailable(this));
+
+        if (!Network.isNetworkConnectionAvailable(this) && (!settings.isExplicitOffline())) {
+            Log.d(GameResult.class.getName(), "NetworkErrorDialog");
+            new GooglePlayGame.NetworkErrorDialogFragment().show(getSupportFragmentManager(), NETWORK_ERROR_DIALOG_TAG);
+        }
+    }
+
+    @Override
+    protected boolean autoStartConnection() {
+
+        return (!settings.isExplicitOffline()) && Network.isNetworkConnectionAvailable(this);
+    }
+
+    @Override
+    public void onConnected(Bundle connectionHint) {
+
+        settings.setFirstServiceTry(false);
+        settings.setExplicitOffline(false);
+    }
+
+    @Override
+    public void onConnectionSuspended(int cause) {
+
+        retryConnecting();
+    }
+
+    @Override
+    protected View getViewForPopups() {
+
+        return findViewById(R.id.main_layout);
+    }
 }
