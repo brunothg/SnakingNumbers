@@ -21,21 +21,44 @@ package de.bno.snakingnumbers.settings;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.util.Log;
 
+import com.google.android.gms.games.Games;
+
 import de.bno.snakingnumbers.R;
 import de.bno.snakingnumbers.data.Settings;
+import de.bno.snakingnumbers.helper.GooglePlay.GooglePlayActivity;
 
 /**
  * Created by marvin on 17.09.14.
  */
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+    GooglePlayActivity playActivity;
+
+    @Override
+    public void onAttach(Activity activity) {
+
+        super.onAttach(activity);
+
+        if (activity instanceof GooglePlayActivity) {
+            playActivity = (GooglePlayActivity) activity;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+
+        playActivity = null;
+
+        super.onDetach();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
 
@@ -66,13 +89,16 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
         if (key.equals(Settings.EXPLICIT_OFFLINE_KEY)) {
 
-            setLogin(sharedPreferences.getBoolean(key, true));
+            boolean success = setLogin(sharedPreferences.getBoolean(key, true));
+            if (!success) {
+                sharedPreferences.edit().putBoolean(key, !sharedPreferences.getBoolean(key, true)).apply();
+            }
         }
 
         updateSummery(sharedPreferences, key);
     }
 
-    private void updateSummery(SharedPreferences sharedPreferences, String key){
+    private void updateSummery(SharedPreferences sharedPreferences, String key) {
 
         if (key.equals(Settings.EXPLICIT_OFFLINE_KEY)) {
 
@@ -88,8 +114,19 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         }
     }
 
-    private void setLogin(boolean logOut){
+    private boolean setLogin(boolean logOut) {
 
-        //TODO: LogOut
+        if (playActivity == null) {
+            return false;
+        }
+
+        if (logOut) {
+            Games.signOut(playActivity.getApiClient());
+            playActivity.disconnect();
+        } else {
+            playActivity.retryConnecting();
+        }
+
+        return true;
     }
 }

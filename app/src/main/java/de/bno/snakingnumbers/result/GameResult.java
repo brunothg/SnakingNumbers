@@ -164,7 +164,7 @@ public class GameResult extends GooglePlayActivity implements View.OnClickListen
     }
 
     @Override
-    protected void retryConnecting() {
+    public void retryConnecting() {
 
         if (!playServiceWorkDone) {
 

@@ -119,7 +119,7 @@ public abstract class GooglePlayActivity extends FragmentActivity implements Goo
 
     protected abstract void onUserAbortedConnection(int resultCode);
 
-    protected void retryConnecting() {
+    public void retryConnecting() {
         Log.d(GooglePlayActivity.class.getName(), "retryConnecting");
 
 
@@ -132,7 +132,7 @@ public abstract class GooglePlayActivity extends FragmentActivity implements Goo
         }
     }
 
-    protected void reconnect(){
+    protected void reconnect() {
 
         getApiClient().reconnect();
     }
@@ -187,7 +187,7 @@ public abstract class GooglePlayActivity extends FragmentActivity implements Goo
         dialogFragment.show(getSupportFragmentManager(), ERROR_DIALOG_TAG);
     }
 
-    protected GoogleApiClient getApiClient() {
+    public GoogleApiClient getApiClient() {
 
         return apiClient;
     }
@@ -200,6 +200,11 @@ public abstract class GooglePlayActivity extends FragmentActivity implements Goo
     protected boolean isConnected() {
 
         return getApiClient().isConnected();
+    }
+
+    public void disconnect() {
+        
+        apiClient.disconnect();
     }
 
 
