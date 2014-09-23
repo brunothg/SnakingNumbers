@@ -78,6 +78,11 @@ public class Settings {
 
     public void setExplicitOffline(boolean explicitOffline){
 
+        if(explicitOffline == false){
+
+            setFirstServiceTry(false);
+        }
+
         getPrefs().edit().putBoolean(EXPLICIT_OFFLINE_KEY, explicitOffline).apply();
     }
 

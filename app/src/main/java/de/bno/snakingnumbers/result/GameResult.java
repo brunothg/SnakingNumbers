@@ -50,6 +50,7 @@ public class GameResult extends GooglePlayActivity implements View.OnClickListen
     public static final String MAX_NUMBER_EXTRA = "max_number_extra";
 
     private static final String NETWORK_ERROR_DIALOG_TAG = "network_error_dialog_tag";
+    private static final String FIRST_SIGN_ATTEMPT_DIALOG_TAG = "first_sign_attempt_dialog_tag";
 
     private int difficulty;
     private long time;
@@ -82,7 +83,7 @@ public class GameResult extends GooglePlayActivity implements View.OnClickListen
 
         settings = new Settings(this);
 
-        checkNetwork();
+        checkFirstSinginAttempt();
     }
 
     @Override
@@ -101,6 +102,7 @@ public class GameResult extends GooglePlayActivity implements View.OnClickListen
         if (id == R.id.action_refresh) {
 
             settings.setExplicitOffline(false);
+            playServiceWorkDone = false;
             retryConnecting();
 
             return true;
@@ -128,6 +130,9 @@ public class GameResult extends GooglePlayActivity implements View.OnClickListen
         } else if (resultCode == GamesActivityResultCodes.RESULT_RECONNECT_REQUIRED) {
 
             reconnect();
+        } else if (resultCode == GamesActivityResultCodes.RESULT_NETWORK_FAILURE) {
+
+            checkNetwork();
         } else {
 
             Log.e(GameResult.class.getName(), "onUserAbortedConnection unhandled " + resultCode);
@@ -139,7 +144,7 @@ public class GameResult extends GooglePlayActivity implements View.OnClickListen
     @Override
     protected boolean autoStartConnection() {
 
-        return (!settings.isExplicitOffline() || settings.isFirstServiceTry()) && Network.isNetworkConnectionAvailable(this);
+        return (!settings.isExplicitOffline()) && Network.isNetworkConnectionAvailable(this);
     }
 
     @Override
@@ -147,7 +152,8 @@ public class GameResult extends GooglePlayActivity implements View.OnClickListen
 
         settings.setFirstServiceTry(false);
         settings.setExplicitOffline(false);
-        //TODO: Connected
+
+        doPlayServiceWork();
     }
 
     @Override
@@ -240,7 +246,7 @@ public class GameResult extends GooglePlayActivity implements View.OnClickListen
     private void checkNetwork() {
         Log.d(GameResult.class.getName(), "checkNetwork " + settings.isExplicitOffline() + " " + Network.isNetworkConnectionAvailable(this));
 
-        if (!Network.isNetworkConnectionAvailable(this) && (!settings.isExplicitOffline() || settings.isFirstServiceTry())) {
+        if (!Network.isNetworkConnectionAvailable(this) && (!settings.isExplicitOffline())) {
             Log.d(GameResult.class.getName(), "NetworkErrorDialog");
             new NetworkErrorDialogFragment().show(getSupportFragmentManager(), NETWORK_ERROR_DIALOG_TAG);
         }
@@ -266,5 +272,67 @@ public class GameResult extends GooglePlayActivity implements View.OnClickListen
 
         }
 
+    }
+
+    private void checkFirstSinginAttempt() {
+
+        if (!settings.isFirstServiceTry() && !settings.isExplicitOffline()) {
+            return;
+        }
+
+        Log.d(GameResult.class.getName(), "FirstSignAttemptDialog");
+        FirstSignAttemptDialogFragment.create(settings, this).show(getSupportFragmentManager(), FIRST_SIGN_ATTEMPT_DIALOG_TAG);
+    }
+
+    public static class FirstSignAttemptDialogFragment extends DialogFragment {
+
+        public Settings settings;
+        public GameResult gameResult;
+
+        public static FirstSignAttemptDialogFragment create(Settings setting, GameResult game) {
+
+            FirstSignAttemptDialogFragment ret = new FirstSignAttemptDialogFragment();
+            ret.settings = setting;
+            ret.gameResult = game;
+
+            return ret;
+        }
+
+        public FirstSignAttemptDialogFragment() {
+
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.result_first_sign_title).setMessage(R.string.result_first_sign_message).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    if (settings == null || gameResult == null) {
+                        return;
+                    }
+
+                    settings.setExplicitOffline(false);
+                    gameResult.retryConnecting();
+                }
+            }).setNegativeButton(android.R.string.no, null);
+
+            return builder.create();
+        }
+
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+
+        }
+
+    }
+
+    private void doPlayServiceWork() {
+
+        //TODO: PlayService work
+
+        playServiceWorkDone = true;
     }
 }
