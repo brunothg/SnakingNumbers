@@ -9,6 +9,8 @@
     <color name="dark2_normal_background">#000</color>
     <color name="dark1_normal_background">#303035</color>
 
-    <color name="base_highlight">#fd0006</color>
-    <color name="dark1_highlight">#9e0004</color>
+    <color name="base_highlight">#4f628e</color>
+    <color name="base_highlight_alpha">#994f628e</color>
+    <color name="dark1_highlight">#2e4172</color>
+    <color name="dark1_highlight_alpha">#992e4172</color>
 </resources>
