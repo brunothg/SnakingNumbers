@@ -19,11 +19,13 @@
 package de.bno.snakingnumbers.helper.GooglePlay;
 
 import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
 
+import de.bno.snakingnumbers.R;
 import de.bno.snakingnumbers.game.gui.Game;
 
 /**
@@ -36,31 +38,28 @@ public class Highscores {
         activity.startActivityForResult(Games.Leaderboards.getLeaderboardIntent(apiClient, leaderBoardID), requestCode);
     }
 
-    public static String getDifficultyLeaderBoardId(int difficulty) {
-
-        //TODO: leader board Id
+    public static String getDifficultyLeaderBoardId(int difficulty, Context context) {
 
         switch (difficulty) {
             case Game.DIFFICULTY_EASY:
-                break;
+                return context.getString(R.string.leaderboard_penalties_easy);
             case Game.DIFFICULTY_MEDIUM:
-                break;
+                return context.getString(R.string.leaderboard_penalties_medium);
             case Game.DIFFICULTY_HARD:
-                break;
+                return context.getString(R.string.leaderboard_penalties_hard);
         }
 
         return null;
     }
 
-    public static void handleGameResult(int difficulty, long points, GoogleApiClient apiClient) {
+    public static void handleGameResult(int difficulty, long time, int clicks, int minClicks, GoogleApiClient apiClient, Context context) {
 
-        newEntry(difficulty, points, apiClient);
+        newEntry(difficulty, time + (clicks - minClicks), apiClient, context);
     }
 
-    private static void newEntry(int difficulty, long points, GoogleApiClient apiClient) {
+    private static void newEntry(int difficulty, long points, GoogleApiClient apiClient, Context context) {
         Log.d(Highscores.class.getName(), "newEntry " + points);
 
-        //TODO: new Entry
-        //Games.Leaderboards.submitScore(apiClient, getDifficultyLeaderBoardId(difficulty), points);
+        Games.Leaderboards.submitScore(apiClient, getDifficultyLeaderBoardId(difficulty, context), points);
     }
 }

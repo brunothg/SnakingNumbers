@@ -334,7 +334,7 @@ public class GameResult extends GooglePlayActivity implements View.OnClickListen
 
 
         Achievements.handleGameResult(difficulty, time, clicks, prozent, getApiClient(), this);
-        Highscores.handleGameResult(difficulty, (Game.MAX_TIME + Game.MAX_CLICKS) - (time + clicks), getApiClient());
+        Highscores.handleGameResult(difficulty, time, clicks, max_number - 1, getApiClient(), this);
 
         playServiceWorkDone = true;
     }
