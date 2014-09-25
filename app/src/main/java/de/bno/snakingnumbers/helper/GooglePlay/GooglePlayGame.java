@@ -18,7 +18,6 @@
 
 package de.bno.snakingnumbers.helper.GooglePlay;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -27,14 +26,11 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
 
 import de.bno.snakingnumbers.R;
 import de.bno.snakingnumbers.data.Settings;
-import de.bno.snakingnumbers.result.GameResult;
 
 
 /**
@@ -80,7 +76,7 @@ public class GooglePlayGame {
 
         @Override
         public void onDismiss(DialogInterface dialog) {
-
+            super.onDismiss(dialog);
         }
 
     }
@@ -125,7 +121,7 @@ public class GooglePlayGame {
 
         @Override
         public void onDismiss(DialogInterface dialog) {
-
+            super.onDismiss(dialog);
         }
 
     }

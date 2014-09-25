@@ -400,7 +400,7 @@ public class MainMenu extends GooglePlayActivity implements View.OnClickListener
 
         @Override
         public void onDismiss(DialogInterface dialog) {
-
+            super.onDismiss(dialog);
         }
 
     }
