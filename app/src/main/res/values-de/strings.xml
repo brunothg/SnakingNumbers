@@ -53,8 +53,8 @@
 
     <string name="title_sure_exit">Spiel verlassen?</string>
     <string name="message_sure_exit">Willst du das Spiel wirklich verlassen?</string>
-    <string name="yes_sure_exit">Menü</string>
-    <string name="no_sure_exit">Zurück zum Spiel</string>
+    <string name="yes_sure_exit">Beenden</string>
+    <string name="no_sure_exit">Weiterspielen</string>
 
     <string name="tut_goal">Ziel des Spiels</string>
     <string name="tut_goal_info">Finde in so kurzer Zeit wie möglich einen Weg von der oberen linken Ecke in die untere rechte Ecke.</string>

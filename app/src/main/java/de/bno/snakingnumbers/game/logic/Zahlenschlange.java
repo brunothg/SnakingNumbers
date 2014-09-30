@@ -78,7 +78,8 @@ public class Zahlenschlange implements PlayerInterface, GameInterface, Serializa
             return new Result().setGameFinished(true);
         }
 
-        if (path.add(x, y, playground.getValue(x, y))) {
+        Position pathEnd = getPathEnd();
+        if (!(pathEnd.getX() + 1 == playground.getDimension() && pathEnd.getY() + 1 == playground.getDimension()) && path.add(x, y, playground.getValue(x, y))) {
 
             return new Result().setOK(true).setGameFinished(
                     path.isComplete(playground.getDimension(),

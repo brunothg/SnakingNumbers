@@ -37,8 +37,8 @@
 
     <string name="title_sure_exit">Exit game?</string>
     <string name="message_sure_exit">Do you really want to exit this game?</string>
-    <string name="yes_sure_exit">Menu</string>
-    <string name="no_sure_exit">Back to game</string>
+    <string name="yes_sure_exit">Exit</string>
+    <string name="no_sure_exit">Play on</string>
 
     <string name="timer_format" formatted="false" translatable="false">%02d:%02d:%02d</string>
     <string name="click_count_format" formatted="false" translatable="false">%04d</string>
