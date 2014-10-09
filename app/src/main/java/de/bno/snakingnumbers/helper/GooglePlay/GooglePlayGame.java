@@ -54,7 +54,10 @@ public class GooglePlayGame {
         }
 
         builder = builder.addApi(Games.API).addScope(Games.SCOPE_GAMES);
-        builder = builder.setViewForPopups(popupView);
+
+        if(popupView != null) {
+            builder = builder.setViewForPopups(popupView);
+        }
 
         return builder.build();
     }

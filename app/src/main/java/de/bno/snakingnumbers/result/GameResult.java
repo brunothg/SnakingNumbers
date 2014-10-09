@@ -170,7 +170,7 @@ public class GameResult extends GooglePlayActivity implements View.OnClickListen
 
     protected View getViewForPopups() {
 
-        return findViewById(R.id.main_layout);
+        return findViewById(R.id.main_layout_result);
     }
 
     private void getData() {
