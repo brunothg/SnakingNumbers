@@ -8,8 +8,8 @@ android {
         applicationId "de.bno.snakingnumbers"
         minSdkVersion 15
         targetSdkVersion 20
-        versionCode 9
-        versionName "2.0.1"
+        versionCode 10
+        versionName "2.0.2"
     }
     buildTypes {
         release {
