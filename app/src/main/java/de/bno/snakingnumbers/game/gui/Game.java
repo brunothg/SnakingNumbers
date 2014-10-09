@@ -38,7 +38,6 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import de.bno.snakingnumbers.helper.FullScreenActivity;
 import de.bno.snakingnumbers.R;
 import de.bno.snakingnumbers.game.logic.Position;
 import de.bno.snakingnumbers.game.logic.Result;
@@ -46,6 +45,7 @@ import de.bno.snakingnumbers.game.logic.Zahlenschlange;
 import de.bno.snakingnumbers.game.logic.time.OnTickListener;
 import de.bno.snakingnumbers.game.logic.time.Timer;
 import de.bno.snakingnumbers.helper.AsString;
+import de.bno.snakingnumbers.helper.FullScreenActivity;
 
 /**
  * Created by marvin on 09.09.14.
@@ -109,6 +109,7 @@ public class Game extends FullScreenActivity implements View.OnClickListener, On
         finished = GAME_FINISHED_NOT_YET;
 
         noTitle();
+        lockScreenshots();
         setContentView(R.layout.activity_game);
 
         fetchGUIElements();

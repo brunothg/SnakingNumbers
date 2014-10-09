@@ -22,6 +22,7 @@ import android.app.Activity;
 import android.os.Build;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 
 /**
  * Created by marvin on 06.09.14.
@@ -72,5 +73,13 @@ public abstract class FullScreenActivity extends Activity {
         }
 
         getWindow().getDecorView().setSystemUiVisibility(newUiOptions);
+    }
+
+    /**
+     * Prevent the Activity from being saved as a screenshot.
+     */
+    protected void lockScreenshots() {
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
     }
 }
