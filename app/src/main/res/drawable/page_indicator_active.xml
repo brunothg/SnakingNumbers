@@ -21,6 +21,6 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
        android:shape="oval" >
 
-    <gradient android:centerX="0.35" android:centerY="0.35" android:startColor="#fff" android:endColor="#000" android:type="radial" android:gradientRadius="10" />
+    <gradient android:centerX="0.35" android:centerY="0.35" android:startColor="#000" android:endColor="#aaa" android:type="radial" android:gradientRadius="10" />
 
 </shape>
